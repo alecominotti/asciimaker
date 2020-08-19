@@ -1,13 +1,3 @@
-# asciimaker
-ASCII HTML Animation Maker
-
-  ______   ______   ______   __   __       __    __   ______   __  __   ______   ______    
- /\  __ \ /\  ___\ /\  ___\ /\ \ /\ \     /\ "-./  \ /\  __ \ /\ \/ /  /\  ___\ /\  == \   
- \ \  __ \\ \___  \\ \ \____\ \ \\ \ \    \ \ \-./\ \\ \  __ \\ \  _"-.\ \  __\ \ \  __<   
-  \ \_\ \_\\/\_____\\ \_____\\ \_\\ \_\    \ \_\ \ \_\\ \_\ \_\\ \_\ \_\\ \_____\\ \_\ \_\ 
-   \/_/\/_/ \/_____/ \/_____/ \/_/ \/_/     \/_/  \/_/ \/_/\/_/ \/_/\/_/ \/_____/ \/_/ /_/ 
-   
-
 English:
 - ASCII Maker is a script that generates an ASCII animation from a video.
 - The animation is not saved as a video or gif, but as an HTML file, so it can be displayed in any web browser.
