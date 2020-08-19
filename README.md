@@ -37,12 +37,12 @@ Use:
 	Typing Ctrl+C during execution will stop the process and clean all temporary files created.
 
 Examples of use:
-	./asciimaker myVideo.mp4
-	./asciimaker videos/nice/myVideo.avi
-	./asciimaker myVideo.mp4 60
-	./asciimaker myVideo.mp4 29.97
-	./asciimaker -c
-	./asciimaker -h
+	./asciimaker myVideo.mp4\
+	./asciimaker videos/nice/myVideo.avi\
+	./asciimaker myVideo.mp4 60\
+	./asciimaker myVideo.mp4 29.97\
+	./asciimaker -c\
+	./asciimaker -h\
 	
 (default FPS: same as video)
 
