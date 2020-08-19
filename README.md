@@ -41,7 +41,7 @@ Examples of use:
 	./asciimaker myVideo.mp4 60\
 	./asciimaker myVideo.mp4 29.97\
 	./asciimaker -c\
-	./asciimaker -h\
+	./asciimaker -h
 	
 (default FPS: same as video)
 
