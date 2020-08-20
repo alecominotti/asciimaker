@@ -1,7 +1,8 @@
 # asciimaker
-ASCII HTML Animation Maker
 
 ![ASCII Maker Banner](https://github.com/alecominotti/asciimaker/blob/master/resources/bannerasciimaker.png?raw=true)  
+
+![ASCII Maker Gif](https://github.com/alecominotti/asciimaker/blob/master/resources/asciimakergif.gif?raw=true)  
 
 English:
 - ASCII Maker is a script that generates an ASCII Art version of a video.
@@ -36,13 +37,13 @@ Español:
 	Typing Ctrl+C during execution will stop the process and clean all temporary files created.
 
 #### Examples of use:
-	```./asciimaker myVideo.mp4\
-	./asciimaker videos/nice/myVideo.avi\
-	./asciimaker myVideo.mp4 60\
-	./asciimaker myVideo.mp4 29.97\
-	./asciimaker -c\
+	./asciimaker myVideo.mp4
+	./asciimaker videos/nice/myVideo.avi
+	./asciimaker myVideo.mp4 60
+	./asciimaker myVideo.mp4 29.97
+	./asciimaker -c
 	./asciimaker -h
-	```
+	
 	
 (default FPS: same as video)
 
@@ -58,4 +59,4 @@ Español:
 - FFmpeg tool, by Fabrice Bellard:
 	https://ffmpeg.org/
 
-- Ale Cominotti - 2020
+##### Ale Cominotti - 2020
