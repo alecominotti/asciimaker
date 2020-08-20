@@ -1,12 +1,16 @@
 #!/bin/bash
 
+#Ale Cominotti - 2020
+
+
 #Basic variables to customize output:
-width=220 #width of final ASCII animation
-background="dark" #dark|light
+#----------------------------------------------------------
+width=250 #width of final ASCII animation
+background="dark" #dark | light
 chars="" #chars of ASCII animation, leave EMPTY for default
+#----------------------------------------------------------
 
-
-
+#char colors
 NONE='\033[00m'
 RED='\033[00;31m'
 GREEN='\033[01;32m'
@@ -18,12 +22,22 @@ WHITE='\033[01;37m'
 BOLD='\033[1m'
 UNDERLINE='\033[4m'
 
+resources_folder="resources"
+sequence_folder="${resources_folder}/sequences"
+
+stty -echoctl # hide ^C
+
+function clean_temps {
+  echo -e "${CYAN}Cleaning temporary files..."
+    `rm -f $resources_folder/outputascii.html`
+    `rm -f $sequence_folder/*.jpg`
+    `rm -f $sequence_folder/*.txt`
+    echo -e "Done${NONE}"
+}
+
 process_stop() {
-    echo -e "\n${RED}Process stopped.${NONE} Cleaning temp files..."
-    `rm -f outputascii.html`
-    `rm -f secuenciaJPG/*.jpg`
-    `rm -f secuenciaJPG/*.txt`
-    echo -e "Done"
+    echo -e "\n${RED}Process stopped.${NONE}"
+    clean_temps
     exit 1
 }
 
@@ -31,14 +45,13 @@ trap 'process_stop' SIGINT
 
 function banner {
   delay=0.05
-  echo -e "${YELLOW}"
+  echo -ne "${YELLOW}"
   #echo '
- #______   ______   ______   __   __       __    __   ______   __  __   ______   ______    
-#/\  __ \ /\  ___\ /\  ___\ /\ \ /\ \     /\ "-./  \ /\  __ \ /\ \/ /  /\  ___\ /\  == \   
-#\ \  __ \\ \___  \\ \ \____\ \ \\ \ \    \ \ \-./\ \\ \  __ \\ \  _"-.\ \  __\ \ \  __<   
-# \ \_\ \_\\/\_____\\ \_____\\ \_\\ \_\    \ \_\ \ \_\\ \_\ \_\\ \_\ \_\\ \_____\\ \_\ \_\ 
-#  \/_/\/_/ \/_____/ \/_____/ \/_/ \/_/     \/_/  \/_/ \/_/\/_/ \/_/\/_/ \/_____/ \/_/ /_/ 
-#  '
+  # ______   ______   ______   __   __       __    __   ______   __  __   ______   ______    
+  #/\  __ \ /\  ___\ /\  ___\ /\ \ /\ \     /\ "-./  \ /\  __ \ /\ \/ /  /\  ___\ /\  == \   
+  #\ \  __ \\ \___  \\ \ \____\ \ \\ \ \    \ \ \-./\ \\ \  __ \\ \  _"-.\ \  __\ \ \  __<   
+  # \ \_\ \_\\/\_____\\ \_____\\ \_\\ \_\    \ \_\ \ \_\\ \_\ \_\\ \_\ \_\\ \_____\\ \_\ \_\ 
+  #  \/_/\/_/ \/_____/ \/_____/ \/_/ \/_/     \/_/  \/_/ \/_/\/_/ \/_/\/_/ \/_____/ \/_/ /_/ 
 
   echo ' ______   ______   ______   __   __       __    __   ______   __  __   ______   ______    '
   sleep $delay
@@ -55,17 +68,17 @@ function banner {
   echo -e "${NONE}"
 }
 
-function ayuda {
+function help {
   clear
   banner
   while read line; do    
     echo $line    
-  done < ayuda.txt
+  done < $resources_folder/help.txt
   exit 1
 }
 
 if [[ $1 = "-h" ]] || [[ $1 = "--help" ]] || [[ $1 = "-help" ]]; then
-  ayuda
+  help
 fi
 
 #1 = installed | 0 = not installed
@@ -91,16 +104,6 @@ if [[ $jp2a_installed -eq 0 ]] || [[ $ffmpeg_installed -eq 0 ]]; then
   echo -e "${NONE}"
 fi
 
-
-stty -echoctl # hide ^C
-
-function clean_temps {
-  echo -e "${CYAN}Cleaning temporary files..."
-    `rm -f outputascii.html`
-    `rm -f secuenciaJPG/*.jpg`
-    `rm -f secuenciaJPG/*.txt`
-    echo -e "Done${NONE}"
-}
 
 if [[ $1 = "-c" ]] || [[ $1 = "--clean" ]] || [[ $1 = "-clean" ]]; then
   clean_temps
@@ -137,27 +140,27 @@ if [ -z $1 ]
       echo -e "${PURPLE}-----------------------${NONE}" #####
       #echo -e "${PURPLE}Press Ctrl+C to stop execution${NONE}" #####
       echo -ne "Generating JPG sequence..." #####
-      ffmpeg -i $1 -vf fps=$2 'secuenciaJPG/secuen%05d.jpg' -y -loglevel panic
+      ffmpeg -i $1 -vf fps=$2 "${sequence_folder}/secuen%05d.jpg" -y -loglevel panic
       echo -e "${BOLD}${GREEN}√${NONE}"
       echo -ne "Generating ASCII frames..." #####
       `rm -f output.html`
-      `rm -f outputascii.html`
+      `rm -f $resources_folder/outputascii.html`
       if [ -z $chars ]
         then
-          `find secuenciaJPG -name '*.jpg' | sort | xargs -I xxx jp2a --width=$width --background=$background xxx --output=xxx.txt`
+          `find $sequence_folder -name '*.jpg' | sort | xargs -I xxx jp2a --width=$width --background=$background xxx --output=xxx.txt`
         else
-          `find secuenciaJPG -name '*.jpg' | sort | xargs -I xxx jp2a --chars=$chars --width=$width --background=$background xxx --output=xxx.txt`
+          `find $sequence_folder -name '*.jpg' | sort | xargs -I xxx jp2a --chars=$chars --width=$width --background=$background xxx --output=xxx.txt`
       fi        
       echo -e "${BOLD}${GREEN}√${NONE}"
       echo -ne "Generating HTML file..." #####
-      `for f in secuenciaJPG/*.txt; do echo '</pre><pre>'; cat "$f"; done >> outputascii.html`
+      `for f in $sequence_folder/*.txt; do echo '</pre><pre>'; cat "$f"; done >> $resources_folder/outputascii.html`
       echo -e "${BOLD}${GREEN}√${NONE}"
       echo -ne "Cleaning temp files..." #####
-      `rm -f secuenciaJPG/*.jpg`
-      `rm -f secuenciaJPG/*.txt`
-      `sed -i '1d' outputascii.html`
-      `head --lines=-1 outputascii.html > output.html`
-      `rm -f outputascii.html`
+      `rm -f $sequence_folder/*.jpg`
+      `rm -f $sequence_folder/*.txt`
+      `sed -i '1d' $resources_folder/outputascii.html`
+      `head --lines=-1 $resources_folder/outputascii.html > output.html`
+      `rm -f $resources_folder/outputascii.html`
 
       `echo "<!DOCTYPE html>
       <html>
