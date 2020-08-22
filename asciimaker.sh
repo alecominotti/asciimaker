@@ -46,10 +46,11 @@ function banner {
 stty -echoctl # hide ^C
 
 function clean_temps {
-  echo -e "${CYAN}Cleaning temporary files..."
+  echo -ne "${CYAN}Cleaning temporary files..."
     `rm -f $resources_folder/outputascii.html`
     `rm -f $sequence_folder/*.jpg`
     `rm -f $sequence_folder/*.txt`
+    echo -ne "${BOLD}${GREEN}√ "
     echo -e "Done${NONE}"
 }
 
