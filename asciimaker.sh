@@ -136,7 +136,7 @@ while (( "$#" )); do
         exit 0
         shift 2
       ;;
-    -fps|--frames)
+    -f|--fps)
       if [ -n "$2" ]; then
         if ! [[ $2 =~ $re ]] &&  [[ ! -z $2 ]]
         then
