@@ -58,7 +58,7 @@ jp2a tool, by Christian Stigen Larsen:
 FFmpeg tool, by Fabrice Bellard:
 	https://ffmpeg.org/
 
-youtube-dl tool, by Yen Chi Hsuan, Remita Amine,Sergey M. and more: 
+youtube-dl tool, by Yen Chi Hsuan, Remita Amine, Sergey M. and more: 
 	http://ytdl-org.github.io/youtube-dl/about.html
 
 Ale Cominotti - 2020
