@@ -52,6 +52,7 @@ Español:
 	./asciimaker -i myVideo.mp4 -fps 29.97 -w 256
 	./asciimaker -i myVideo.mp4 -b "light" -c ".,-'01abc"
 	./asciimaker -y https://www.youtube.com/watch?v=dQw4w9WgXcQ
+	./asciimaker -y https://www.youtube.com/watch?v=sjbLokqe0rA -w 50
 	./asciimaker -C
 	./asciimaker -h
 
