@@ -122,14 +122,14 @@ while (( "$#" )); do
     -i|--input) 
       if [ -n "$2" ] && [ ${2:0:1} != "-" ]; then
         if [ ! -f $2 ]; then
-          echo -e "${RED}ERROR:${NONE} Input file '${2}' not found! (ex.: './asciimaker -i video.mp4')" >&2
+          echo -e "${RED}ERROR:${NONE} Input file '${2}' not found (ex.: './asciimaker -i video.mp4')" >&2
           help_message
           exit 1
         fi
         input=$2
         shift 2
       else
-        echo -e "${RED}ERROR:${NONE} Missing input value! (ex.: './asciimaker -i video.mp4)" >&2
+        echo -e "${RED}ERROR:${NONE} Missing input value (ex.: './asciimaker -i video.mp4)" >&2
         help_message
         exit 1
       fi
@@ -143,14 +143,14 @@ while (( "$#" )); do
       if [ -n "$2" ]; then
         if ! [[ $2 =~ $re ]] &&  [[ ! -z $2 ]]
         then
-          echo -e "${RED}ERROR:${NONE} FPS parameter must be a number! (ex.: './asciimaker -i video.mp4 -fps 29.97')" >&2
+          echo -e "${RED}ERROR:${NONE} FPS parameter must be a number (ex.: './asciimaker -i video.mp4 -fps 29.97')" >&2
           help_message
           exit 1
         fi
         fps=$2
         shift 2
       else
-        echo -e "${RED}ERROR:${NONE} Missing FPS value! (ex.: './asciimaker -i video.mp4 -fps 60')" >&2
+        echo -e "${RED}ERROR:${NONE} Missing FPS value (ex.: './asciimaker -i video.mp4 -fps 60')" >&2
         help_message
         exit 1
       fi
@@ -160,7 +160,7 @@ while (( "$#" )); do
         width=$2
         shift 2
       else
-        echo -e "${RED}ERROR:${NONE} Missing width value! (ex.: './asciimaker -i video.mp4 -w 200')" >&2
+        echo -e "${RED}ERROR:${NONE} Missing width value (ex.: './asciimaker -i video.mp4 -w 200')" >&2
         help_message
         exit 1
       fi
@@ -170,7 +170,7 @@ while (( "$#" )); do
         chars=$2
         shift 2
       else
-        echo -e "${RED}ERROR:${NONE} Missing chars value! (ex.: './asciimaker -i video.mp4 -c \".-01abc\" ')" >&2
+        echo -e "${RED}ERROR:${NONE} Missing chars value (ex.: './asciimaker -i video.mp4 -c \".-01abc\" ')" >&2
         help_message
         exit 1
       fi
@@ -179,14 +179,14 @@ while (( "$#" )); do
       if [ -n "$2" ]; then
         if ! [[ $2 == "dark" ]] && [[ ! $2 == "light"  ]]
           then
-            echo -e "${RED}ERROR:${NONE} Incorrect background parameter! (ex.: './asciimaker -i video.mp4 -b \"dark\" ')" >&2
+            echo -e "${RED}ERROR:${NONE} Incorrect background parameter (ex.: './asciimaker -i video.mp4 -b \"dark\" ')" >&2
             help_message
             exit 1
         fi
         background=$2
         shift 2
       else
-        echo -e "${RED}ERROR:${NONE} Missing background value! (ex.: './asciimaker -i video.mp4 -b \"dark\" ')" >&2
+        echo -e "${RED}ERROR:${NONE} Missing background value (ex.: './asciimaker -i video.mp4 -b \"dark\" ')" >&2
         help_message
         exit 1
       fi
@@ -196,6 +196,11 @@ while (( "$#" )); do
       exit 0
       ;;
     -y|--youtube)
+      if [ -z $input ]; then
+        echo -e "${RED}ERROR:${NONE} You can't use both local and Youtube inputs at the same time" >&2
+        help_message
+        exit 1
+      fi
       if ! pip freeze | grep "youtube-dl"= > /dev/null ; then
         echo -e "${YELLOWBG}'youtube-dl' is not installed and ASCII Maker needs it to download Youtube videos.${NONE}"
         read -p "Would you like to install it? (Y/N): " confirm && [[ $confirm == [yY] || $confirm == [yY][eE][sS] ]] || exit 1
@@ -217,7 +222,7 @@ while (( "$#" )); do
         fi
         shift 2
       else
-        echo -e "${RED}ERROR:${NONE} Missing youtube URL! (ex.: './asciimaker -y www.asd.com')" >&2
+        echo -e "${RED}ERROR:${NONE} Missing youtube URL (ex.: './asciimaker -y https://www.youtube.com/watch?v=dQw4w9WgXcQ')" >&2
         help_message
         exit 1
       fi
