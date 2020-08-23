@@ -211,14 +211,13 @@ while (( "$#" )); do
       fi
       if [ -n "$2" ]; then
         `rm -f $resources_folder/*.mp4`
+        banner
         echo -e "${GREENTHIN}Downloading video from Youtube, please wait...${NONE}"
         video_dl=$(youtube-dl -o "resources/%(title)s" -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/bestvideo+bestaudio' $2)
         one=${video_dl#*Merging formats into }
         two=${one%Deleting*}
         input=`echo "$two" | awk -F'"' '{print $2}'`
         yt_name=`echo ${input##*/}`
-#        echo $input
- #       exit 1
         if [ -z "$yt_name" ]; then
           exit 1
         fi
@@ -275,6 +274,8 @@ fi
   echo -e "${PURPLE}-----------------------${NONE}" #####
   #echo -e "${PURPLE}Press Ctrl+C to stop execution${NONE}" #####
   echo -ne "Generating JPG sequence..." #####
+  start=$(date +%s)
+  SECONDS=0
   ffmpeg -i "${input}" -vf fps=$fps "${sequence_folder}/secuen%05d.jpg" -y -loglevel panic
   echo -e "${BOLD}${GREEN}√${NONE}"
   echo -ne "Generating ASCII frames..." #####
@@ -291,7 +292,7 @@ fi
   `for f in $sequence_folder/*.txt; do echo '</pre><pre>'; cat "$f"; done >> $resources_folder/outputascii.html`
   echo -e "${BOLD}${GREEN}√${NONE}"
   echo -ne "Cleaning temp files..." #####
-  `rm -f $resources_folder/*.mp4`
+  `rm -f "${input}"`
   `rm -f $sequence_folder/*.jpg`
   `rm -f $sequence_folder/*.txt`
   `sed -i '1d' $resources_folder/outputascii.html`
@@ -335,6 +336,17 @@ fi
   </body>
   </html>' >> output.html`
   echo -e "${BOLD}${GREEN}√${NONE}"
+  if (( $SECONDS > 3600 )) ; then
+    let "hours=SECONDS/3600"
+    let "minutes=(SECONDS%3600)/60"
+    let "seconds=(SECONDS%3600)%60"
+    echo "Completed in $hours hour(s), $minutes minute(s) and $seconds second(s)" 
+  elif (( $SECONDS > 60 )) ; then
+    let "minutes=(SECONDS%3600)/60"
+    let "seconds=(SECONDS%3600)%60"
+    echo "Completed in $minutes minute(s) and $seconds second(s)"
+  else
+    echo "Completed in $SECONDS seconds"
+  fi
   echo -e "ASCII HTML Animation saved in '${BOLD}${GREEN}output.html${NONE}'"
-
 exit 0
