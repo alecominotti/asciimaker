@@ -44,7 +44,7 @@ Español:
 	[-h | --help] = Shows this help.
 	
 	Typing Ctrl+C during execution will stop the process and clean all temporary files created.
-	Youtube videos are downloaded in the best quality possible
+	Youtube videos are downloaded in the best quality possible.
 	
 #### Examples of use:
 	./asciimaker -i myVideo.mp4
