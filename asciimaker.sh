@@ -48,6 +48,7 @@ stty -echoctl # hide ^C
 function clean_temps {
   echo -ne "${CYAN}Cleaning temporary files..."
     `rm -f $resources_folder/outputascii.html`
+    `rm -f $resources_folder/*.mp4`
     `rm -f $sequence_folder/*.jpg`
     `rm -f $sequence_folder/*.txt`
     echo -ne "${BOLD}${GREEN}√ "
@@ -105,6 +106,7 @@ fi
 #Variables, do not modify
 #----------------------------------------------------------
 input=""
+yt_name=""
 fps=""
 width=220 #width of final ASCII animation, default= 220
 background="dark" #dark | light
@@ -193,6 +195,33 @@ while (( "$#" )); do
       clean_temps
       exit 0
       ;;
+    -y|--youtube)
+      if ! pip freeze | grep "youtube-dl"= > /dev/null ; then
+        echo -e "${YELLOWBG}'youtube-dl' is not installed and ASCII Maker needs it to download Youtube videos.${NONE}"
+        read -p "Would you like to install it? (Y/N): " confirm && [[ $confirm == [yY] || $confirm == [yY][eE][sS] ]] || exit 1
+        sudo pip install youtube-dl
+        echo -e "${GREEN}---------------------------------------------------------------------"
+        read -n 1 -s -r -p "Youtube dependency was installed! Press any key to continue to ASCII Maker"
+        echo -e "${NONE}"
+      fi
+      if [ -n "$2" ]; then
+        `rm -f $resources_folder/*.mp4`
+        echo -e "${GREENTHIN}Downloading video from Youtube, please wait...${NONE}"
+        video_dl=$(youtube-dl -o "resources/%(title)s" -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/bestvideo+bestaudio' $2)
+        one=${video_dl#*Merging formats into }
+        two=${one%Deleting*}
+        input=`echo "$two" | awk -F'"' '{print $2}'`
+        yt_name=`echo ${input##*/}`
+        if [ -z "$yt_name" ]; then
+          exit 1
+        fi
+        shift 2
+      else
+        echo -e "${RED}ERROR:${NONE} Missing youtube URL! (ex.: './asciimaker -y www.asd.com')" >&2
+        help_message
+        exit 1
+      fi
+      ;;
     -*|--*=) # unsupported flags
       echo -e "${RED}ERROR:${NONE} Unsupported argument: '$1'" >&2
       help_message
@@ -216,7 +245,12 @@ fi
 #Aca empieza la joda
   clear
   banner
-  echo -e "${BOLD}Input:${NONE} '${CYAN}${input}${NONE}'" #####
+  if [[ "yt_name" == "" ]]
+    then
+      echo -e "${BOLD}Input:${NONE} '${CYAN}${input}${NONE}'" #####
+    else
+      echo -e "${BOLD}Input:${NONE} '${CYAN}${yt_name}${NONE}' ${CYAN}(From Youtube)${NONE}" #####  
+  fi  
   if [ -z $fps ]
     then
       echo -e "${BOLD}FPS:${NONE} ${CYAN}Same as input${NONE}" #####
@@ -250,6 +284,7 @@ fi
   `for f in $sequence_folder/*.txt; do echo '</pre><pre>'; cat "$f"; done >> $resources_folder/outputascii.html`
   echo -e "${BOLD}${GREEN}√${NONE}"
   echo -ne "Cleaning temp files..." #####
+  `rm -f $resources_folder/$yt_name`
   `rm -f $sequence_folder/*.jpg`
   `rm -f $sequence_folder/*.txt`
   `sed -i '1d' $resources_folder/outputascii.html`
