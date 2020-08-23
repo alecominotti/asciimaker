@@ -12,7 +12,7 @@ English:
 - As I mentioned before, I use the jp2a tool to convert every .jpg frame into a .txt ASCII frame.
 - Before this conversion, I use the FFmpeg tool to create the JPG sequence from the selected video.
 - The script allows you to use a Youtube video as an input.
-- **All dependencies are able to be installed when running the script**.
+- **All dependencies can be installed from the script**.
 - You can customize the final output with the script parameters. (fps, size, background color, characters).
 - The HTML file may take a few seconds to load in the web browser, depending on the amount of frames of the video.
 
@@ -24,7 +24,7 @@ Español:
 - Por último, una función JavaScript se encarga de ocultar todos los fotogramas menos el que se muestra en pantalla, y luego muestra sólo el siguiente, y así sucesivamente, atravesando todos los fotogramas del video en loop.
 - Como mencioné anteriormente, utilizo la herramienta jp2a para convertir cada fotograma .jpg en un fotograma .txt en ASCII.
 - Antes de esa conversión, utilizo la herramienta FFmpeg para crear la secuencia JPG del video seleccionado.
-- **Todas las dependencias pueden ser instaladas al ejecutar el script**.
+- **Todas las dependencias pueden ser instaladas desde el script**.
 - Podés personalizar el resultado final con los parametros del script. (fps, tamaño, color de fondo, caracteres).
 - El archivo HTML puede demorar unos segundos en cargar en el navegador web, dependiendo de la cantidad de fotogramas del video.
 
