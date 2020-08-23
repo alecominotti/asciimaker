@@ -11,7 +11,8 @@ English:
 - Lastly, a JavaScript function hides every frame except the one that is being displayed, and then shows only the next one, and so on, going through all frames of the video in loop.
 - As I mentioned before, I use the jp2a tool to convert every .jpg frame into a .txt ASCII frame.
 - Before this conversion, I use the FFmpeg tool to create the JPG sequence from the selected video.
-- All dependencies will be able to be installed when running the script.
+- The script allows you to use a Youtube video as an input.
+- **All dependencies are able to be installed when running the script**.
 - You can customize the final output with the script parameters. (fps, size, background color, characters).
 - The HTML file may take a few seconds to load in the web browser, depending on the amount of frames of the video.
 
@@ -23,7 +24,7 @@ Español:
 - Por último, una función JavaScript se encarga de ocultar todos los fotogramas menos el que se muestra en pantalla, y luego muestra sólo el siguiente, y así sucesivamente, atravesando todos los fotogramas del video en loop.
 - Como mencioné anteriormente, utilizo la herramienta jp2a para convertir cada fotograma .jpg en un fotograma .txt en ASCII.
 - Antes de esa conversión, utilizo la herramienta FFmpeg para crear la secuencia JPG del video seleccionado.
-- Todas las dependencias podrán ser instaladas al ejecutar el script.
+- **Todas las dependencias pueden ser instaladas al ejecutar el script**.
 - Podés personalizar el resultado final con los parametros del script. (fps, tamaño, color de fondo, caracteres).
 - El archivo HTML puede demorar unos segundos en cargar en el navegador web, dependiendo de la cantidad de fotogramas del video.
 
@@ -31,8 +32,9 @@ Español:
 
 
 ```./asciimaker -i <path/to/video>```
+```./asciimaker -y <youtube_link>```
 
-	Parameters:
+	Options:
 	[-f | --fps] = Specify frames per second of output (default: same as input).
 	[-w | --width] = Specify width of output. Height is calculated automatically (default: 220).
 	[-c | --chars] = Specify the characters to use when producing the ASCII output.
@@ -47,6 +49,7 @@ Español:
 	./asciimaker -i videos/nice/myVideo69.avi -fps 60
 	./asciimaker -i myVideo.mp4 -fps 29.97 -w 256
 	./asciimaker -i myVideo.mp4 -b "light" -c ".,-'01abc"
+	./asciimaker -y https://www.youtube.com/watch?v=dQw4w9WgXcQ
 	./asciimaker -C
 	./asciimaker -h
 
@@ -61,5 +64,8 @@ Español:
 
 - FFmpeg tool, by Fabrice Bellard:
 	https://ffmpeg.org/
+	
+- youtube-dl tool, by Yen Chi Hsuan, Remita Amine, Sergey M. and more: 
+	http://ytdl-org.github.io/youtube-dl/about.html
   
 ##### Ale Cominotti - 2020
