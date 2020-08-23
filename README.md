@@ -31,7 +31,7 @@ Español:
 ### Usage
 
 
-```./asciimaker -i <path/to/video>```
+```./asciimaker -i <path/to/video>```\
 ```./asciimaker -y <youtube_link>```
 
 	Options:
