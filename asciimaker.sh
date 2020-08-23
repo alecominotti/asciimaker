@@ -18,6 +18,27 @@ UNDERLINE='\033[4m'
 resources_folder="resources"
 sequence_folder="${resources_folder}/sequences"
 
+function help {
+  clear
+  banner
+  while read line; do    
+    echo $line    
+  done < $resources_folder/help.txt
+  exit 1
+}
+
+function help_message {
+  echo -e "Use ${GREENTHIN}-h${NONE} or ${GREENTHIN}--help${NONE} to show help"
+}
+
+if [ -f $resources_folder/running ] && [[ ! "$*" == "-h" ]] && [[ ! "$*" == "--help" ]]; then
+    echo -e "${RED}ERROR:${NONE} ASCII Maker already running in another window" >&2
+    help_message
+    exit 1
+  else
+    touch $resources_folder/running 
+fi
+
 function banner {
   delay=0.05
   echo -ne "${YELLOW}"
@@ -49,8 +70,10 @@ function clean_temps {
   echo -ne "${CYAN}Cleaning temporary files..."
     `rm -f $resources_folder/outputascii.html`
     `rm -f $resources_folder/*.mp4`
+    `rm -f $resources_folder/*.part`
     `rm -f $sequence_folder/*.jpg`
     `rm -f $sequence_folder/*.txt`
+    `rm -f $resources_folder/running`
     echo -ne "${BOLD}${GREEN}√ "
     echo -e "Done${NONE}"
 }
@@ -62,19 +85,6 @@ process_stop() {
 }
 
 trap 'process_stop' SIGINT
-
-function help {
-  clear
-  banner
-  while read line; do    
-    echo $line    
-  done < $resources_folder/help.txt
-  exit 1
-}
-
-function help_message {
-  echo -e "Use ${GREENTHIN}-h${NONE} or ${GREENTHIN}--help${NONE} to show help"
-}
 
 
 #Dependecies check-----------------------------------------------------
@@ -298,6 +308,7 @@ fi
   `sed -i '1d' $resources_folder/outputascii.html`
   `head --lines=-1 $resources_folder/outputascii.html > output.html`
   `rm -f $resources_folder/outputascii.html`
+  `rm -f $resources_folder/*.part`
 
   `echo "<!DOCTYPE html>
   <html>
@@ -349,4 +360,7 @@ fi
     echo "Completed in $SECONDS seconds"
   fi
   echo -e "ASCII HTML Animation saved in '${BOLD}${GREEN}output.html${NONE}'"
+
+`rm -f $resources_folder/running`
+
 exit 0
