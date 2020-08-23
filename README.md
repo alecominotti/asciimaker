@@ -24,6 +24,7 @@ Español:
 - Por último, una función JavaScript se encarga de ocultar todos los fotogramas menos el que se muestra en pantalla, y luego muestra sólo el siguiente, y así sucesivamente, atravesando todos los fotogramas del video en loop.
 - Como mencioné anteriormente, utilizo la herramienta jp2a para convertir cada fotograma .jpg en un fotograma .txt en ASCII.
 - Antes de esa conversión, utilizo la herramienta FFmpeg para crear la secuencia JPG del video seleccionado.
+- El script te permite usar un video de Youtube como input.
 - **Todas las dependencias pueden ser instaladas desde el script**.
 - Podés personalizar el resultado final con los parametros del script. (fps, tamaño, color de fondo, caracteres).
 - El archivo HTML puede demorar unos segundos en cargar en el navegador web, dependiendo de la cantidad de fotogramas del video.
@@ -31,7 +32,7 @@ Español:
 ### Usage
 
 
-```./asciimaker -i <path/to/video>```
+```./asciimaker -i <path/to/video>```\
 ```./asciimaker -y <youtube_link>```
 
 	Options:
