@@ -196,7 +196,7 @@ while (( "$#" )); do
       exit 0
       ;;
     -y|--youtube)
-      if [ -z $input ]; then
+      if ! [ -z $input ]; then
         echo -e "${RED}ERROR:${NONE} You can't use both local and Youtube inputs at the same time" >&2
         help_message
         exit 1
@@ -217,6 +217,8 @@ while (( "$#" )); do
         two=${one%Deleting*}
         input=`echo "$two" | awk -F'"' '{print $2}'`
         yt_name=`echo ${input##*/}`
+#        echo $input
+ #       exit 1
         if [ -z "$yt_name" ]; then
           exit 1
         fi
@@ -273,7 +275,7 @@ fi
   echo -e "${PURPLE}-----------------------${NONE}" #####
   #echo -e "${PURPLE}Press Ctrl+C to stop execution${NONE}" #####
   echo -ne "Generating JPG sequence..." #####
-  ffmpeg -i $input -vf fps=$fps "${sequence_folder}/secuen%05d.jpg" -y -loglevel panic
+  ffmpeg -i "${input}" -vf fps=$fps "${sequence_folder}/secuen%05d.jpg" -y -loglevel panic
   echo -e "${BOLD}${GREEN}√${NONE}"
   echo -ne "Generating ASCII frames..." #####
   `rm -f output.html`
@@ -289,7 +291,7 @@ fi
   `for f in $sequence_folder/*.txt; do echo '</pre><pre>'; cat "$f"; done >> $resources_folder/outputascii.html`
   echo -e "${BOLD}${GREEN}√${NONE}"
   echo -ne "Cleaning temp files..." #####
-  `rm -f $resources_folder/$yt_name`
+  `rm -f $resources_folder/*.mp4`
   `rm -f $sequence_folder/*.jpg`
   `rm -f $sequence_folder/*.txt`
   `sed -i '1d' $resources_folder/outputascii.html`
