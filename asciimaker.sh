@@ -1,6 +1,7 @@
 #!/bin/bash
 
 #Ale Cominotti - 2020
+echo -ne "\033[00;33mLoading...\r"
 
 #char colors
 NONE='\033[00m'
@@ -24,20 +25,13 @@ function help {
   while read line; do    
     echo $line    
   done < $resources_folder/help.txt
+  clean_temps
   exit 1
 }
 
 function help_message {
   echo -e "Use ${GREENTHIN}-h${NONE} or ${GREENTHIN}--help${NONE} to show help"
 }
-
-if [ -f $resources_folder/running ] && [[ ! "$*" == "-h" ]] && [[ ! "$*" == "--help" ]]; then
-    echo -e "${RED}ERROR:${NONE} ASCII Maker already running in another window" >&2
-    help_message
-    exit 1
-  else
-    touch $resources_folder/running 
-fi
 
 function banner {
   delay=0.05
@@ -98,11 +92,11 @@ trap 'process_stop' SIGINT
 jp2a_installed=$(dpkg-query -W -f='${Status}' jp2a 2>/dev/null | grep -c "ok installed")
 ffmpeg_installed=$(dpkg-query -W -f='${Status}' ffmpeg 2>/dev/null | grep -c "ok installed")
 
-if [[ $jp2a_installed -eq 0 ]] || [[ $ffmpeg_installed -eq 0 ]]; then
-
+if [[ $jp2a_installed -eq 0 ]] || [[ $ffmpeg_installed -eq 0 ]] && [[ ! "$*" == "-h" ]] && [[ ! "$*" == "--help" ]]; then
+ #clean_temps
   if [[ $jp2a_installed -eq 0 ]] ; then
     echo -e "${YELLOWBG}'jpa2' is not installed and ASCII Maker needs it.${NONE}"
-    read -p "Would you like to install it? (Y/N): " confirm && [[ $confirm == [yY] || $confirm == [yY][eE][sS] ]] || exit 1
+    read -p "Would you like to install it? (Y/N): " confirm && [[ $confirm == [yY] || $confirm == [yY][eE][sS] ]] || exit 1 && clean_temps
     sudo apt-get install -y jp2a
   fi
 
@@ -118,16 +112,26 @@ if [[ $jp2a_installed -eq 0 ]] || [[ $ffmpeg_installed -eq 0 ]]; then
 fi
 #End dependecies check-------------------------------------------------
 
+if [ -f $resources_folder/running ] && [[ ! "$*" == "-h" ]] && [[ ! "$*" == "--help" ]]; then
+    echo -e "${RED}ERROR:${NONE} ASCII Maker already running in another window" >&2
+    help_message
+    exit 1
+  else
+    touch $resources_folder/running 
+fi
 
 #Variables, do not modify
 #----------------------------------------------------------
 input=""
 yt_name=""
 fps=""
+start_pos=""
+end_pos=""
 width=220 #width of final ASCII animation, default= 220
 background="dark" #dark | light
 chars="" #chars of ASCII animation, leave EMPTY for default
 re='^[0-9]+([.][0-9]+)?$' #decimal number regex
+time_regex='^([0-5][0-9]:)?[0-5][0-9]:[0-5][0-9]$'
 #----------------------------------------------------------
 
 
@@ -215,6 +219,48 @@ while (( "$#" )); do
         exit 1
       fi
       ;;
+    -s|--start)
+      if [ -n "$2" ]; then
+        if ! [[ $2 =~ $time_regex ]] &&  [[ ! -z $2 ]]
+          then
+            clean_temps
+            echo -e "${RED}ERROR:${NONE} Incorrect time expression (ex.: './asciimaker -i video.mp4 -s 00:15 ')" >&2
+            help_message
+            exit 1
+        fi
+        start_pos=$2
+        if [[ ${#2} -eq 5 ]]; then
+          start_pos=`echo 00:$start_pos`
+        fi
+        shift 2
+      else
+        clean_temps
+        echo -e "${RED}ERROR:${NONE} Missing starting position (ex.: './asciimaker -i video.mp4 -s 00:15 ')" >&2
+        help_message
+        exit 1
+      fi
+      ;;
+    -e|--end)
+      if [ -n "$2" ]; then
+        if ! [[ $2 =~ $time_regex ]] &&  [[ ! -z $2 ]]
+          then
+            clean_temps
+            echo -e "${RED}ERROR:${NONE} Incorrect time expression (ex.: './asciimaker -i video.mp4 -e 00:45 ')" >&2
+            help_message
+            exit 1
+        fi
+        end_pos=$2
+        if [[ ${#2} -eq 5 ]]; then
+          end_pos=`echo 00:$end_pos`
+        fi
+        shift 2
+      else
+        clean_temps
+        echo -e "${RED}ERROR:${NONE} Missing ending position (ex.: './asciimaker -i video.mp4 -e 00:45 ')" >&2
+        help_message
+        exit 1
+      fi
+      ;;
     -C|--clean)
       clean_temps_verbose
       exit 0
@@ -236,6 +282,7 @@ while (( "$#" )); do
       fi
       if [ -n "$2" ]; then
         `rm -f $resources_folder/*.mp4`
+        clear
         banner
         echo -e "${GREENTHIN}Downloading video from Youtube, please wait...${NONE}"
         video_dl=$(youtube-dl -o "resources/%(title)s" -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/bestvideo+bestaudio' $2)
@@ -274,6 +321,37 @@ if [[ $input = "" ]]; then
   help_message
   exit 1
 fi
+
+#Start and ending positions check:
+if [ ! -z $start_pos ] && [ ! -z $end_pos ]; then
+  IFS=: read ah am as <<< "$start_pos"
+  IFS=: read bh bm bs <<< "$end_pos"
+  secondsA=$((10#$ah*60*60 + 10#$am*60 + 10#$as))
+  secondsB=$((10#$bh*60*60 + 10#$bm*60 + 10#$bs))
+  DIFF_SEC=$((secondsB - secondsA))
+  SEC=$(($DIFF_SEC%60))
+  MIN=$((($DIFF_SEC-$SEC)%3600/60))
+  HRS=$((($DIFF_SEC-$MIN*60)/3600))
+  TIME_DIFF="$HRS:$MIN:$SEC";
+
+  if [[ ! $TIME_DIFF != *"-"* ]];then
+    clean_temps
+    echo -e "${RED}ERROR:${NONE} Ending time position must be subsequent to the starting time position (ex.: './asciimaker -i video.mp4 -s 00:10 -e 00:15')" >&2
+    help_message
+    exit 1
+  fi
+fi
+if [ ! -z $end_pos ]; then
+  video_length=`ffprobe -i "$input" -show_entries format=duration -v quiet -of csv="p=0" | cut -d "." -f 1`
+  diff="$(($secondsB - $video_length))"
+  if (( $diff > 0 )); then
+    clean_temps
+    echo -e "${RED}ERROR:${NONE} Range of time selected not valid for that video (Maybe your ending time position exceeds video duration)." >&2
+    help_message
+    exit 1
+  fi
+fi
+
 #End parameter handling------------------------------------------------------
 
 #Aca empieza la joda
@@ -284,7 +362,19 @@ fi
       echo -e "${BOLD}Input:${NONE} '${CYAN}${input}${NONE}'" #####
     else
       echo -e "${BOLD}Input:${NONE} '${CYAN}${yt_name}${NONE}' ${CYAN}(From Youtube)${NONE}" #####  
-  fi  
+  fi
+  if [ -z $start_pos ]
+    then
+      echo -e "${BOLD}Start position:${NONE} ${CYAN}Same as input${NONE}" #####
+    else
+      echo -e "${BOLD}Start position:${NONE} ${CYAN}${start_pos}${NONE}" #####  
+  fi
+  if [ -z $end_pos ]
+    then
+      echo -e "${BOLD}End position:${NONE} ${CYAN}Same as input${NONE}" #####
+    else
+      echo -e "${BOLD}End position:${NONE} ${CYAN}${end_pos}${NONE}" #####  
+  fi
   if [ -z $fps ]
     then
       echo -e "${BOLD}FPS:${NONE} ${CYAN}Same as input${NONE}" #####
@@ -302,9 +392,25 @@ fi
   echo -e "${PURPLE}-----------------------${NONE}" #####
   #echo -e "${PURPLE}Press Ctrl+C to stop execution${NONE}" #####
   echo -ne "Generating JPG sequence..." #####
-  start=$(date +%s)
-  SECONDS=0
-  ffmpeg -i "${input}" -vf fps=$fps "${sequence_folder}/secuen%05d.jpg" -y -loglevel panic
+  SECONDS=0 #timer start
+
+  #Spaghet-ish
+  if [ ! -z $start_pos ]
+    then
+      if [ ! -z $end_pos ]
+        then
+          ffmpeg -ss "${start_pos}" -to "${end_pos}" -i "${input}" -vf fps=$fps "${sequence_folder}/secuen%05d.jpg" -y -loglevel panic
+        else
+          ffmpeg -ss "${start_pos}" -i "${input}" -vf fps=$fps "${sequence_folder}/secuen%05d.jpg" -y -loglevel panic
+      fi
+    else
+      if [ ! -z $end_pos ]
+        then
+          ffmpeg -to "${end_pos}" -i "${input}" -vf fps=$fps "${sequence_folder}/secuen%05d.jpg" -y -loglevel panic
+        else
+          ffmpeg -i "${input}" -vf fps=$fps "${sequence_folder}/secuen%05d.jpg" -y -loglevel panic
+      fi
+  fi  
   echo -e "${BOLD}${GREEN}√${NONE}"
   echo -ne "Generating ASCII frames..." #####
   `rm -f output.html`
@@ -332,7 +438,7 @@ fi
   <html>
     <head>
       <meta charset='UTF-8'>
-      <title>Animación ASCII</title>
+      <title>ASCII HTML Art</title>
     </head>
     <body>
       <style>
@@ -373,10 +479,11 @@ fi
   elif (( $SECONDS > 60 )) ; then
     let "minutes=(SECONDS%3600)/60"
     let "seconds=(SECONDS%3600)%60"
-    echo "Completed in $minutes minute(s) and $seconds second(s)"
+    echo -ne "Completed in $minutes minute(s) and $seconds second(s)"
   else
-    echo "Completed in $SECONDS seconds"
+    echo -ne "Completed in $SECONDS seconds"
   fi
+  echo -e "${BOLD}${GREEN} √${NONE}"
   echo -e "ASCII HTML Animation saved in '${BOLD}${GREEN}output.html${NONE}'"
 
 `rm -f $resources_folder/running`
