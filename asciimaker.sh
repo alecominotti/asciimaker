@@ -358,7 +358,7 @@ fi
 #Aca empieza la joda
   clear
   banner
-  if [[ "yt_name" == "" ]]
+  if [[ "$yt_name" == "" ]]
     then
       echo -e "${BOLD}Input:${NONE} '${CYAN}${input}${NONE}'" #####
     else
@@ -427,7 +427,7 @@ fi
   `for f in $sequence_folder/*.txt; do echo '</pre><pre>'; cat "$f"; done >> $resources_folder/outputascii.html`
   echo -e "${BOLD}${GREEN}√${NONE}"
   echo -ne "Cleaning temp files..." #####
-  `rm -f "${input}"`
+  `rm -f $resources_folder/*.mp4`
   `rm -f $sequence_folder/*.jpg`
   `rm -f $sequence_folder/*.txt`
   `sed -i '1d' $resources_folder/outputascii.html`
