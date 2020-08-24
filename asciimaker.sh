@@ -4,7 +4,7 @@
 
 echo -ne "\033[00;33mLoading...\r"
 
-#char colors
+#Char colors
 NONE='\033[00m'
 RED='\033[00;31m'
 GREEN='\033[01;32m'
