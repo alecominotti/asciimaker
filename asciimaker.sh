@@ -1,6 +1,7 @@
 #!/bin/bash
 
 #Ale Cominotti - 2020
+
 echo -ne "\033[00;33mLoading...\r"
 
 #char colors
