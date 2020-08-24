@@ -47,13 +47,17 @@ Español:
 	Youtube videos are downloaded in the best quality possible.
 	
 #### Examples of use:
-	./asciimaker -i myVideo.mp4
-	./asciimaker -i videos/nice/myVideo69.avi -fps 60
-	./asciimaker -i myVideo.mp4 -fps 29.97 -w 256
-	./asciimaker -i myVideo.mp4 -b "light" -c ".,-'01abc"
-	./asciimaker -y https://www.youtube.com/watch?v=dQw4w9WgXcQ
-	./asciimaker -C
-	./asciimaker -h
+	./asciimaker.sh -i myVideo.mp4
+	./asciimaker.sh -i videos/nice/myVideo69.avi -fps 60
+	./asciimaker.sh -i myVideo.mp4 -fps 29.97 -w 256
+	./asciimaker.sh -i myVideo.mp4 -b "light" -c ".,-'01abc"
+	./asciimaker.sh -y https://www.youtube.com/watch?v=dQw4w9WgXcQ
+	./asciimaker.sh -y https://www.youtube.com/watch?v=sjbLokqe0rA -w 140
+	./asciimaker.sh -C
+	./asciimaker.sh -h
+
+
+Currently working only on Linux.
 
 
 #### Links:
