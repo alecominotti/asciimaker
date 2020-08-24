@@ -54,7 +54,7 @@ Español:
 	./asciimaker.sh -i videos/nice/myVideo69.avi -fps 60
 	./asciimaker.sh -i myVideo.mp4 -fps 29.97 -w 256
 	./asciimaker.sh -i myVideo.mp4 -b light -c ".,-'01abc"
-	./asciimaker.sh -y https://www.youtube.com/watch?v=dQw4w9WgXcQ -s 00:03 -e 00:07
+	./asciimaker.sh -y https://www.youtube.com/watch?v=dQw4w9WgXcQ -w 170 -s 00:03 -e 00:07
 	./asciimaker.sh -y https://www.youtube.com/watch?v=sjbLokqe0rA -w 140 -e 00:05
 	./asciimaker.sh -C
 	./asciimaker.sh -h
