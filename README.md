@@ -62,6 +62,10 @@ Español:
 	./asciimaker.sh -h
 
 
+### [Click here to watch real example in your browser](https://alecominotti.github.io/ "Ascii Maker example")
+
+</br>
+
 Currently only working on Linux.
 
 
