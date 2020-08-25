@@ -5,7 +5,7 @@
 ![ASCII Maker Gif](https://github.com/alecominotti/asciimaker/blob/master/resources/asciimakergif.gif?raw=true)  
 
 English:
-- ASCII Maker is a script that generates an HTML ASCII Art version of a video.
+- ASCII Maker is a script that generates an HTML ASCII Art version of a video, image or gif.
 - The animation is not saved as a video or gif, but as an HTML file, and it can be displayed in any web browser.
 - I used the concept of John Hilliard, which consists in converting every frame of a video into ASCII Art using the jp2a tool and then concatenating those ASCII frames inside an HTML file, separating them with tags (\<pre\> tags in this case).
 - Lastly, a JavaScript function hides every frame except the one that is being displayed, and then shows only the next one, and so on, going through all frames of the video in loop.
@@ -19,7 +19,7 @@ English:
 
 
 Español:
-- ASCII Maker es un script que genera una versión HTML ASCII Art de un video. 
+- ASCII Maker es un script que genera una versión HTML ASCII Art de un video, imagen o gif. 
 - La animación no se guarda como un video o un gif, sino como un archivo HTML, y puede ser reproducida desde cualquier navegador web.
 - Usé el concepto de John Hilliard, el cual consiste en transformar cada fotograma de un video en ASCII Art y luego concatenar esos fotogramas dentro de un archivo HTML, separándolos con tags (en este caso, tags \<pre\>).
 - Por último, una función JavaScript se encarga de ocultar todos los fotogramas menos el que se muestra en pantalla, y luego muestra sólo el siguiente, y así sucesivamente, atravesando todos los fotogramas del video en loop.
@@ -33,9 +33,8 @@ Español:
 
 ### Usage
 
-
-```./asciimaker -i <path/to/video>```\
-```./asciimaker -y <youtube_link>```
+	
+```./asciimaker.sh < -i path/to/input_file | -y Youtube_URL > [ options ]```
 
 	Options:
 	[-f | --fps] = Specify frames per second of output (default: same as input).
