@@ -115,28 +115,8 @@ case "${OSTYPE}" in
       fi
       ;;
     Darwin)
-    jp2a_installed=$(dpkg-query -W -f='${Status}' jp2a 2>/dev/null | grep -c "ok installed")
-      ffmpeg_installed=$(dpkg-query -W -f='${Status}' ffmpeg 2>/dev/null | grep -c "ok installed")
-
-      if [[ $jp2a_installed -eq 0 ]] || [[ $ffmpeg_installed -eq 0 ]] && [[ ! "$*" == "-h" ]] && [[ ! "$*" == "--help" ]]; then
-
-          if [[ $jp2a_installed -eq 0 ]] ; then
-            echo -e "${YELLOWBG}'jpa2' is not installed and ASCII Maker needs it.${NONE}"
-            read -p "Would you like to install it? (Y/N): " confirm && [[ $confirm == [yY] || $confirm == [yY][eE][sS] ]] || exit 1 && clean_temps
-            sudo apt-get install -y jp2a
-          fi
-
-          if [[ $ffmpeg_installed -eq 0 ]] ; then
-            echo -e "${YELLOWBG}'FFmpeg' is not installed and ASCII Maker needs it.${NONE}"
-            read -p "Would you like to install it? (Y/N): " confirm && [[ $confirm == [yY] || $confirm == [yY][eE][sS] ]] || exit 1
-            sudo apt-get install -y ffmpeg
-          fi
-
-          echo -e "${GREEN}---------------------------------------------------------------------"
-          read -n 1 -s -r -p "Dependencies were installed! Press any key to continue to ASCII Maker"
-          echo -e "${NONE}"
-      fi
-    #echo -e "${RED}ERROR:${NONE} ASCII Maker is not compatible with Mac yet"
+    echo -e "${RED}ERROR:${NONE} ASCII Maker is not compatible with Mac yet"
+    exit 1
     ;;
     *) 
       echo -e "${RED}ERROR:${NONE} ASCII Maker is only compatible with Linux and Mac systems"
