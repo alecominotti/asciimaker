@@ -90,27 +90,60 @@ trap 'process_stop' SIGINT
 
 #Dependecies check-----------------------------------------------------
 #1 = installed | 0 = not installed
-jp2a_installed=$(dpkg-query -W -f='${Status}' jp2a 2>/dev/null | grep -c "ok installed")
-ffmpeg_installed=$(dpkg-query -W -f='${Status}' ffmpeg 2>/dev/null | grep -c "ok installed")
+case "${OSTYPE}" in
+    linux-gnu)
+      jp2a_installed=$(dpkg-query -W -f='${Status}' jp2a 2>/dev/null | grep -c "ok installed")
+      ffmpeg_installed=$(dpkg-query -W -f='${Status}' ffmpeg 2>/dev/null | grep -c "ok installed")
 
-if [[ $jp2a_installed -eq 0 ]] || [[ $ffmpeg_installed -eq 0 ]] && [[ ! "$*" == "-h" ]] && [[ ! "$*" == "--help" ]]; then
- #clean_temps
-  if [[ $jp2a_installed -eq 0 ]] ; then
-    echo -e "${YELLOWBG}'jpa2' is not installed and ASCII Maker needs it.${NONE}"
-    read -p "Would you like to install it? (Y/N): " confirm && [[ $confirm == [yY] || $confirm == [yY][eE][sS] ]] || exit 1 && clean_temps
-    sudo apt-get install -y jp2a
-  fi
+      if [[ $jp2a_installed -eq 0 ]] || [[ $ffmpeg_installed -eq 0 ]] && [[ ! "$*" == "-h" ]] && [[ ! "$*" == "--help" ]]; then
 
-  if [[ $ffmpeg_installed -eq 0 ]] ; then
-    echo -e "${YELLOWBG}'FFmpeg' is not installed and ASCII Maker needs it.${NONE}"
-    read -p "Would you like to install it? (Y/N): " confirm && [[ $confirm == [yY] || $confirm == [yY][eE][sS] ]] || exit 1
-    sudo apt-get install -y ffmpeg
-  fi
+          if [[ $jp2a_installed -eq 0 ]] ; then
+            echo -e "${YELLOWBG}'jpa2' is not installed and ASCII Maker needs it.${NONE}"
+            read -p "Would you like to install it? (Y/N): " confirm && [[ $confirm == [yY] || $confirm == [yY][eE][sS] ]] || exit 1 && clean_temps
+            sudo apt-get install -y jp2a
+          fi
 
-  echo -e "${GREEN}---------------------------------------------------------------------"
-  read -n 1 -s -r -p "Dependencies were installed! Press any key to continue to ASCII Maker"
-  echo -e "${NONE}"
-fi
+          if [[ $ffmpeg_installed -eq 0 ]] ; then
+            echo -e "${YELLOWBG}'FFmpeg' is not installed and ASCII Maker needs it.${NONE}"
+            read -p "Would you like to install it? (Y/N): " confirm && [[ $confirm == [yY] || $confirm == [yY][eE][sS] ]] || exit 1
+            sudo apt-get install -y ffmpeg
+          fi
+
+          echo -e "${GREEN}---------------------------------------------------------------------"
+          read -n 1 -s -r -p "Dependencies were installed! Press any key to continue to ASCII Maker"
+          echo -e "${NONE}"
+      fi
+      ;;
+    Darwin)
+    jp2a_installed=$(dpkg-query -W -f='${Status}' jp2a 2>/dev/null | grep -c "ok installed")
+      ffmpeg_installed=$(dpkg-query -W -f='${Status}' ffmpeg 2>/dev/null | grep -c "ok installed")
+
+      if [[ $jp2a_installed -eq 0 ]] || [[ $ffmpeg_installed -eq 0 ]] && [[ ! "$*" == "-h" ]] && [[ ! "$*" == "--help" ]]; then
+
+          if [[ $jp2a_installed -eq 0 ]] ; then
+            echo -e "${YELLOWBG}'jpa2' is not installed and ASCII Maker needs it.${NONE}"
+            read -p "Would you like to install it? (Y/N): " confirm && [[ $confirm == [yY] || $confirm == [yY][eE][sS] ]] || exit 1 && clean_temps
+            sudo apt-get install -y jp2a
+          fi
+
+          if [[ $ffmpeg_installed -eq 0 ]] ; then
+            echo -e "${YELLOWBG}'FFmpeg' is not installed and ASCII Maker needs it.${NONE}"
+            read -p "Would you like to install it? (Y/N): " confirm && [[ $confirm == [yY] || $confirm == [yY][eE][sS] ]] || exit 1
+            sudo apt-get install -y ffmpeg
+          fi
+
+          echo -e "${GREEN}---------------------------------------------------------------------"
+          read -n 1 -s -r -p "Dependencies were installed! Press any key to continue to ASCII Maker"
+          echo -e "${NONE}"
+      fi
+    #echo -e "${RED}ERROR:${NONE} ASCII Maker is not compatible with Mac yet"
+    ;;
+    *) 
+      echo -e "${RED}ERROR:${NONE} ASCII Maker is only compatible with Linux and Mac systems"
+      exit 1
+      ;;
+esac
+
 #End dependecies check-------------------------------------------------
 
 if [ -f $resources_folder/running ] && [[ ! "$*" == "-h" ]] && [[ ! "$*" == "--help" ]]; then
@@ -124,6 +157,7 @@ fi
 #Variables, do not modify
 #----------------------------------------------------------
 input=""
+youtube_url=""
 yt_name=""
 fps=""
 start_pos=""
@@ -135,6 +169,31 @@ re='^[0-9]+([.][0-9]+)?$' #decimal number regex
 time_regex='^([0-5][0-9]:)?[0-5][0-9]:[0-5][0-9]$'
 #----------------------------------------------------------
 
+youtube_dependencies_check(){
+  #installs python3, pip3, youtube-dl package and updates pip setuptools and wheel
+  clean_temps
+  python3_installed=`command -v python3 >/dev/null 2>&1 && echo 1`
+  pip3_installed=`command -v pip3 >/dev/null 2>&1 && echo 1`
+  if [[ ! $python3_installed -eq 1 ]] ; then
+    echo -e "${YELLOWBG}'Python 3' is not installed and ASCII Maker needs it to download Youtube videos.${NONE}"
+    read -p "Would you like to install it? (Y/N): " confirm && [[ $confirm == [yY] || $confirm == [yY][eE][sS] ]] || exit 1 && clean_temps
+    sudo apt-get install python3.6
+    python -m pip install --upgrade pip setuptools wheel #check pip, setuptools, and wheel are up to date
+  fi
+  if [[ ! $pip3_installed -eq 1 ]] ; then
+    echo -e "${YELLOWBG}'Pip3' is not installed and ASCII Maker needs it to download a Python Youtube package.${NONE}"
+    read -p "Would you like to install it? (Y/N): " confirm && [[ $confirm == [yY] || $confirm == [yY][eE][sS] ]] || exit 1 && clean_temps
+    sudo apt install python3-pip
+  fi
+  if ! pip3 freeze | grep "youtube-dl"= > /dev/null ; then
+    echo -e "${YELLOWBG}'youtube-dl' is not installed and ASCII Maker needs it to download Youtube videos.${NONE}"
+    read -p "Would you like to install it? (Y/N): " confirm && [[ $confirm == [yY] || $confirm == [yY][eE][sS] ]] || exit 1
+    sudo python3 -m pip install youtube-dl
+    echo -e "${GREEN}---------------------------------------------------------------------"
+    read -n 1 -s -r -p "Youtube dependencies were installed! Press any key to continue to ASCII Maker"
+    echo -e "${NONE}"
+  fi
+}
 
 #Parameter handling----------------------------------------------------------
 PARAMS=""
@@ -273,27 +332,9 @@ while (( "$#" )); do
         help_message
         exit 1
       fi
-      if ! pip freeze | grep "youtube-dl"= > /dev/null ; then
-        echo -e "${YELLOWBG}'youtube-dl' is not installed and ASCII Maker needs it to download Youtube videos.${NONE}"
-        read -p "Would you like to install it? (Y/N): " confirm && [[ $confirm == [yY] || $confirm == [yY][eE][sS] ]] || exit 1
-        sudo pip install youtube-dl
-        echo -e "${GREEN}---------------------------------------------------------------------"
-        read -n 1 -s -r -p "Youtube dependency was installed! Press any key to continue to ASCII Maker"
-        echo -e "${NONE}"
-      fi
+      youtube_dependencies_check
       if [ -n "$2" ]; then
-        `rm -f $resources_folder/*.mp4`
-        clear
-        banner
-        echo -e "${GREENTHIN}Downloading video from Youtube, please wait...${NONE}"
-        video_dl=$(youtube-dl -o "resources/%(title)s" -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/bestvideo+bestaudio' $2)
-        one=${video_dl#*Merging formats into }
-        two=${one%Deleting*}
-        input=`echo "$two" | awk -F'"' '{print $2}'`
-        yt_name=`echo ${input##*/}`
-        if [ -z "$yt_name" ]; then
-          exit 1
-        fi
+        youtube_url="${2}"
         shift 2
       else
         clean_temps
@@ -314,6 +355,22 @@ while (( "$#" )); do
       ;;
   esac
 done
+
+#Youtube video download
+if [[ ! $youtube_url == "" ]]; then
+  `rm -f $resources_folder/*.mp4`
+  clear
+  banner
+  echo -e "${GREENTHIN}Downloading video from Youtube, please wait...${NONE}"
+  video_dl=$(youtube-dl -o "resources/%(title)s" -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/bestvideo+bestaudio' ${youtube_url})
+  one=${video_dl#*Merging formats into }
+  two=${one%Deleting*}
+  input=`echo "$two" | awk -F'"' '{print $2}'`
+  yt_name=`echo ${input##*/}`
+  if [ -z "$yt_name" ]; then
+    exit 1
+  fi
+fi
 
 #Mandatory input -i check:
 if [[ $input = "" ]]; then
