@@ -50,7 +50,7 @@ Español:
 	Pressing Ctrl+C during execution will stop the process and clean all temporary files created.
 	Youtube videos are downloaded in the best quality possible.
 	
-#### Examples of use:
+#### Usage examples:
 	./asciimaker.sh -i myVideo.mp4
 	./asciimaker.sh -i videos/nice/myVideo69.avi -fps 60
 	./asciimaker.sh -i myVideo.mp4 -fps 29.97 -w 256
