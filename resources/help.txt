@@ -58,7 +58,7 @@ Currently only working on Linux.
 
 Links:
 
-HTML ASCII animation idea, by John Hilliard: 
+HTML ASCII Art idea, by John Hilliard: 
 	https://john.dev/posts/2019-02-23-ascii-face.html
 
 jp2a tool, by Christian Stigen Larsen:

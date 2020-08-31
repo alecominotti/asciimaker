@@ -19,6 +19,7 @@ UNDERLINE='\033[4m'
 
 resources_folder="resources"
 sequence_folder="${resources_folder}/sequences"
+prompting_clean=0
 
 function help {
   clear
@@ -35,7 +36,7 @@ function help_message {
 }
 
 function banner {
-  delay=0.05
+  delay=0.045
   echo -ne "${YELLOW}"
   #echo '
   # ______   ______   ______   __   __       __    __   ______   __  __   ______   ______    
@@ -80,9 +81,11 @@ function clean_temps_verbose {
 
 
 process_stop() {
-    echo -e "\n${RED}Process stopped.${NONE}"
+  echo -e "\n${RED}Process stopped.${NONE}"
+  if [ $prompting_clean -eq 0 ]; then   
     clean_temps_verbose
-    exit 1
+  fi    
+  exit 1
 }
 
 trap 'process_stop' SIGINT
@@ -126,13 +129,6 @@ esac
 
 #End dependecies check-------------------------------------------------
 
-if [ -f $resources_folder/running ] && [[ ! "$*" == "-h" ]] && [[ ! "$*" == "--help" ]]; then
-    echo -e "${RED}ERROR:${NONE} ASCII Maker already running in another window" >&2
-    help_message
-    exit 1
-  else
-    touch $resources_folder/running 
-fi
 
 #Variables, do not modify
 #----------------------------------------------------------
@@ -151,7 +147,6 @@ time_regex='^([0-5][0-9]:)?[0-5][0-9]:[0-5][0-9]$'
 
 youtube_dependencies_check(){
   #installs python3, pip3, youtube-dl package and updates pip, setuptools and wheel
-  clean_temps
   python3_installed=`command -v python3 >/dev/null 2>&1 && echo 1`
   pip3_installed=`command -v pip3 >/dev/null 2>&1 && echo 1`
   if [[ ! $python3_installed -eq 1 ]] ; then
@@ -302,6 +297,11 @@ while (( "$#" )); do
       fi
       ;;
     -C|--clean)
+      if [ -f $resources_folder/running ]; then
+        prompting_clean=1
+        echo -e "${YELLOW}WARNING:${NONE} It seems like Ascii Maker is already running in another window.\nIf you clean all temporary files now, the currently running Ascii Maker will fail or generate a broken output.\nIf Ascii Maker is not currently running, proceed to solve any problems."
+        read -p "Would you like to continue? (y/n): " confirm && [[ $confirm == [yY] || $confirm == [yY][eE][sS] ]] || exit 1
+      fi    
       clean_temps_verbose
       exit 0
       ;;
@@ -335,6 +335,16 @@ while (( "$#" )); do
       ;;
   esac
 done
+
+SECONDS=0 #timer start
+
+if [ -f $resources_folder/running ] && [[ ! "$*" == "-h" ]] && [[ ! "$*" == "--help" ]] && [[ ! "$*" == "-C" ]] && [[ ! "$*" == "--clean" ]]; then
+    echo -e "${RED}ERROR:${NONE} ASCII Maker already running in another window" >&2
+    help_message
+    exit 1
+  else
+    `touch $resources_folder/running`
+fi
 
 #Youtube video download
 if [[ ! $youtube_url == "" ]]; then
@@ -430,7 +440,6 @@ fi
   echo -e "${PURPLE}-----------------------${NONE}" #####
   #echo -e "${PURPLE}Press Ctrl+C to stop execution${NONE}" #####
   echo -ne "Generating JPG sequence..." #####
-  SECONDS=0 #timer start
 
   #Spaghet-ish
   if [ ! -z $start_pos ]
