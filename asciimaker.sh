@@ -115,11 +115,11 @@ case "${OSTYPE}" in
       fi
       ;;
     Darwin)
-    echo -e "${RED}ERROR:${NONE} ASCII Maker is not compatible with Mac yet"
+    echo -e "${RED}ERROR:${NONE} ASCII Maker is not compatible with Mac yet."
     exit 1
     ;;
     *) 
-      echo -e "${RED}ERROR:${NONE} ASCII Maker is only compatible with Linux and Mac systems"
+      echo -e "${RED}ERROR:${NONE} ASCII Maker is only compatible with Linux systems."
       exit 1
       ;;
 esac
@@ -150,7 +150,7 @@ time_regex='^([0-5][0-9]:)?[0-5][0-9]:[0-5][0-9]$'
 #----------------------------------------------------------
 
 youtube_dependencies_check(){
-  #installs python3, pip3, youtube-dl package and updates pip setuptools and wheel
+  #installs python3, pip3, youtube-dl package and updates pip, setuptools and wheel
   clean_temps
   python3_installed=`command -v python3 >/dev/null 2>&1 && echo 1`
   pip3_installed=`command -v pip3 >/dev/null 2>&1 && echo 1`
