@@ -115,7 +115,7 @@ case "${OSTYPE}" in
       fi
       ;;
     Darwin)
-    echo -e "${RED}ERROR:${NONE} ASCII Maker is not compatible with Mac yet."
+    echo -e "${RED}ERROR:${NONE} ASCII Maker is not compatible with Mac OS systems yet."
     exit 1
     ;;
     *) 
