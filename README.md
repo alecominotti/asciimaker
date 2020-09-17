@@ -31,6 +31,11 @@ Español:
 - Podés personalizar el resultado final con los parametros del script. (fps, tamaño, color de fondo, caracteres y más).
 - El archivo HTML puede demorar unos segundos en cargar en el navegador web, dependiendo de la cantidad de fotogramas del resultado final.
 
+
+### [Click here to watch real example in your browser](https://alecominotti.github.io/ "Ascii Maker example")
+
+<br>
+
 ### Usage
 
 	
@@ -59,9 +64,6 @@ Español:
 	./asciimaker.sh -y https://www.youtube.com/watch?v=sjbLokqe0rA -w 140 -e 00:05
 	./asciimaker.sh -C
 	./asciimaker.sh -h
-
-
-### [Click here to watch real example in your browser](https://alecominotti.github.io/ "Ascii Maker example")
 
 </br>
 
