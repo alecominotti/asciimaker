@@ -2,15 +2,15 @@
 
 ![ASCII Maker Banner](https://github.com/alecominotti/asciimaker/blob/master/resources/bannerasciimaker.png?raw=true)  
 
-![ASCII Maker Gif](https://github.com/alecominotti/asciimaker/blob/master/resources/asciimakergif.gif?raw=true)  
+![ASCII Maker Gif](https://github.com/alecominotti/alecominotti.github.io/blob/master/images/asciimaker.gif?raw=true)  
 
 English:
 - ASCII Maker is a script that generates an HTML ASCII Art version of a video, image or gif.
 - The animation is not saved as a video or gif, but as an HTML file, and it can be displayed in any web browser.
 - I used the concept of John Hilliard, which consists in converting every frame of a video into ASCII Art using the jp2a tool and then concatenating those ASCII frames inside an HTML file, separating them with tags (\<pre\> tags in this case).
 - Lastly, a JavaScript function hides every frame except the one that is being displayed, and then shows only the next one, and so on, going through all frames of the video in loop.
-- I use the jp2a tool to convert every .jpg frame into a .txt ASCII frame.
-- Before this conversion, I use the FFmpeg tool to create the JPG sequence from the selected video.
+- jp2a tool converts every .jpg frame into a .txt ASCII frame.
+- Before this conversion, FFmpeg tool is used to create the JPG sequence from the selected video.
 - **All dependencies can be installed from the script**.
 - The script allows you to use a Youtube video as an input.
 - You can trim the video, specifying the desired starting and ending point.
@@ -23,8 +23,8 @@ Español:
 - La animación no se guarda como un video o un gif, sino como un archivo HTML, y puede ser reproducida desde cualquier navegador web.
 - Usé el concepto de John Hilliard, el cual consiste en transformar cada fotograma de un video en ASCII Art y luego concatenar esos fotogramas dentro de un archivo HTML, separándolos con tags (en este caso, tags \<pre\>).
 - Por último, una función JavaScript se encarga de ocultar todos los fotogramas menos el que se muestra en pantalla, y luego muestra sólo el siguiente, y así sucesivamente, atravesando todos los fotogramas del video en loop.
-- Utilizo la herramienta jp2a para convertir cada fotograma .jpg en un fotograma .txt en ASCII.
-- Antes de esa conversión, utilizo la herramienta FFmpeg para crear la secuencia JPG del video seleccionado.
+- La herramienta jp2a convierte cada fotograma .jpg en un fotograma .txt en ASCII.
+- Antes de esa conversión, la herramienta FFmpeg es usada para crear la secuencia JPG del video seleccionado.
 - **Todas las dependencias pueden ser instaladas desde el script**.
 - El script te permite usar un video de Youtube como input.
 - Podés recortar el video, especificando punto de comienzo y fin deseado.
