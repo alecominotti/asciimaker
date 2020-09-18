@@ -172,7 +172,7 @@ time_regex='^([0-5][0-9]:)?[0-5][0-9]:[0-5][0-9]$'
 youtube_dependencies_check(){
   #installs python3, pip3, youtube-dl package and updates pip, setuptools and wheel
   python3_installed=`command -v python3 >/dev/null 2>&1 && echo 1`
-  #pip3_installed=`command -v pip3 >/dev/null 2>&1 && echo 1`
+  pip_installed=`which pip3`
   if [[ ! $python3_installed -eq 1 ]] ; then
     echo -e "${YELLOWBG}'Python 3' is not installed and ASCII Maker needs it to download Youtube videos.${NONE}"
     read -p "Would you like to install it? (Y/N): " confirm && [[ $confirm == [yY] || $confirm == [yY][eE][sS] ]] || exit 1 && clean_temps
@@ -183,11 +183,15 @@ youtube_dependencies_check(){
     fi
     python3 -m pip install --upgrade pip setuptools wheel #check pip, setuptools, and wheel are up to date
   fi
-  #if [[ ! $pip3_installed -eq 1 ]] ; then
-  #  echo -e "${YELLOWBG}'Pip3' is not installed and ASCII Maker needs it to download a Python Youtube package.${NONE}"
-  #  read -p "Would you like to install it? (Y/N): " confirm && [[ $confirm == [yY] || $confirm == [yY][eE][sS] ]] || exit 1 && clean_temps
-  #  sudo apt install python3-pip
-  #fi
+  if [ -z "$pip_installed" ] ; then
+    echo -e "${YELLOWBG}'Pip' is not installed and ASCII Maker needs it to download a Python Youtube package.${NONE}"
+    read -p "Would you like to install it? (Y/N): " confirm && [[ $confirm == [yY] || $confirm == [yY][eE][sS] ]] || exit 1 && clean_temps
+    if [[ "${OSTYPE}" == darwin* ]]; then
+      brew install python3-pip
+    else
+      sudo apt-get install python3-pip
+    fi
+  fi
   if ! python3 -m pip freeze | grep "youtube-dl"= > /dev/null ; then
     echo -e "${YELLOWBG}'youtube-dl' is not installed and ASCII Maker needs it to download Youtube videos.${NONE}"
     read -p "Would you like to install it? (Y/N): " confirm && [[ $confirm == [yY] || $confirm == [yY][eE][sS] ]] || exit 1
