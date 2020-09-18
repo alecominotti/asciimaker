@@ -4,7 +4,7 @@
 
 ![ASCII Maker Gif](https://github.com/alecominotti/alecominotti.github.io/blob/master/images/asciimaker.gif?raw=true)  
 
-English:
+###### English:
 - ASCII Maker is a script that generates an HTML ASCII Art version of a video, image or gif.
 - The animation is not saved as a video or gif, but as an HTML file, and it can be displayed in any web browser.
 - I used the concept of John Hilliard, which consists in converting every frame of a video into ASCII Art using the jp2a tool and then concatenating those ASCII frames inside an HTML file, separating them with tags (\<pre\> tags in this case).
@@ -18,7 +18,7 @@ English:
 - The HTML file may take a few seconds to load in the web browser, depending on the amount of frames of final output.
 
 
-Español:
+###### Español:
 - ASCII Maker es un script que genera una versión HTML ASCII Art de un video, imagen o gif. 
 - La animación no se guarda como un video o un gif, sino como un archivo HTML, y puede ser reproducida desde cualquier navegador web.
 - Usé el concepto de John Hilliard, el cual consiste en transformar cada fotograma de un video en ASCII Art y luego concatenar esos fotogramas dentro de un archivo HTML, separándolos con tags (en este caso, tags \<pre\>).
@@ -39,7 +39,7 @@ Español:
 ### Usage
 
 	
-```./asciimaker.sh < -i path/to/input_file | -y Youtube_URL > [ options ]```
+```bash asciimaker.sh < -i path/to/input_file | -y "Youtube_URL" > [ options ]```
 
 	Options:
 	[-f | --fps] = Specify frames per second of output (default: same as input).
@@ -56,18 +56,18 @@ Español:
 	Youtube videos are downloaded in the best quality possible.
 	
 #### Usage examples:
-	./asciimaker.sh -i myVideo.mp4
-	./asciimaker.sh -i videos/nice/myVideo69.avi -fps 60
-	./asciimaker.sh -i myVideo.mp4 -fps 29.97 -w 256
-	./asciimaker.sh -i myVideo.mp4 -b light -c ".,-'01abc"
-	./asciimaker.sh -y https://www.youtube.com/watch?v=dQw4w9WgXcQ -w 170 -s 00:03 -e 00:07
-	./asciimaker.sh -y https://www.youtube.com/watch?v=sjbLokqe0rA -w 140 -e 00:05
-	./asciimaker.sh -C
-	./asciimaker.sh -h
+	bash asciimaker.sh -i myVideo.mp4
+	bash asciimaker.sh -i videos/nice/myVideo69.avi -fps 60
+	bash asciimaker.sh -i myVideo.mp4 -fps 29.97 -w 256
+	bash asciimaker.sh -i myVideo.mp4 -b light -c ".,-'01abc"
+	bash asciimaker.sh -y "https://www.youtube.com/watch?v=dQw4w9WgXcQ" -w 170 -s 00:03 -e 00:07
+	bash asciimaker.sh -y "https://www.youtube.com/watch?v=sjbLokqe0rA" -w 140 -e 00:05
+	bash asciimaker.sh -C
+	bash asciimaker.sh -h
 
 </br>
 
-Currently only working on Linux.
+Compatible with Linux and Mac.
 
 
 #### Links:
