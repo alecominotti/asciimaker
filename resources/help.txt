@@ -1,32 +1,25 @@
 English:
-- ASCII Maker is a script that generates an HTML ASCII Art version of a video.
-- The animation is not saved as a video or gif, but as an HTML file, and it can be displayed in any web browser.
-- I used the concept of John Hilliard, which consists in converting every frame of a video into ASCII Art using the jp2a tool and then concatenating those ASCII frames inside an HTML file, separating them with tags (<pre> tags in this case).
-- Lastly, a JavaScript function hides every frame except the one that is being displayed, and then shows only the next one, and so on, going through all frames of the video in loop.
-- I use the jp2a tool to convert every .jpg frame into a .txt ASCII frame.
-- Before this conversion, I use the FFmpeg tool to create the JPG sequence from the selected video.
+- ASCII Maker is a script that generates an HTML ASCII Art version of a video, image or gif.
+- The animation is not saved as a video or gif, but as an HTML file, and it can be displayed in a web browser.
+- I used the concept of John Hilliard, which consists in converting every frame of a video into ASCII Art using the jp2a tool and then concatenating those ASCII frames inside an HTML file, separating them with tags (\<pre\> tags in this case).
+- Then a JavaScript function hides every frame except the one that is being displayed, and then shows only the next one, and so on, going through all frames of the video in loop.
+- You can use a Youtube video as an input.
+- You can customize the final output with the script parameters. (fps, size, background color, characters trimming and more).
+- The HTML file may take a few seconds to load in the web browser, depending on the amount of frames of the final output.
 - All dependencies can be installed from the script.
-- The script allows you to use a Youtube video as an input.
-- You can trim the video, specifying the desired starting and ending point.
-- You can customize the final output with the script parameters. (fps, size, background color, characters and more).
-- The HTML file may take a few seconds to load in the web browser, depending on the amount of frames of final output.
 
 Español:
-- ASCII Maker es un script que genera una versión HTML ASCII Art de un video. 
-- La animación no se guarda como un video o un gif, sino como un archivo HTML, y puede ser reproducida desde cualquier navegador web.
-- Usé el concepto de John Hilliard, el cual consiste en transformar cada fotograma de un video en ASCII Art y luego concatenar esos fotogramas dentro de un archivo HTML, separándolos con tags (en este caso, tags <pre>).
-- Por último, una función JavaScript se encarga de ocultar todos los fotogramas menos el que se muestra en pantalla, y luego muestra sólo el siguiente, y así sucesivamente, atravesando todos los fotogramas del video en loop.
-- Utilizo la herramienta jp2a para convertir cada fotograma .jpg en un fotograma .txt en ASCII.
-- Antes de esa conversión, utilizo la herramienta FFmpeg para crear la secuencia JPG del video seleccionado.
-- Todas las dependencias pueden ser instaladas desde el script.
-- El script te permite usar un video de Youtube como input.
-- Podés recortar el video, especificando punto de comienzo y fin deseado.
-- Podés personalizar el resultado final con los parametros del script. (fps, tamaño, color de fondo, caracteres y más).
+- ASCII Maker es un script que genera una versión HTML ASCII Art de un video, imagen o gif. 
+- La animación no se guarda como un video o un gif, sino como un archivo HTML, y puede ser reproducida desde un navegador web.
+- Usé el concepto de John Hilliard, el cual consiste en transformar cada fotograma de un video en ASCII Art y luego concatenar esos fotogramas dentro de un archivo HTML, separándolos con tags (en este caso, tags \<pre\>).
+- Luego una función JavaScript se encarga de ocultar todos los fotogramas menos el que se muestra en pantalla, y luego muestra sólo el siguiente, y así sucesivamente, atravesando todos los fotogramas del video en loop.
+- Podés usar un video de Youtube como input.
+- Podés personalizar el resultado final con los parametros del script. (fps, tamaño, color de fondo, caracteres punto de inicio, punto de fin y más).
 - El archivo HTML puede demorar unos segundos en cargar en el navegador web, dependiendo de la cantidad de fotogramas del resultado final.
+- Todas las dependencias pueden ser instaladas desde el script.
 
 Usage:
-	./asciimaker -i <path/to/video>
-	./asciimaker -y <youtube_link>
+	bash asciimaker.sh < -i path/to/input_file | -y "Youtube_URL" > [ options ]
 
 	Options:
 	[-f | --fps] = Specify frames per second of output (default: same as input).
@@ -42,18 +35,18 @@ Usage:
 	Typing Ctrl+C during execution will stop the process and clean all temporary files created.
 	Youtube videos are downloaded in the best quality possible.
 
-Examples of use:
-	./asciimaker.sh -i myVideo.mp4
-	./asciimaker.sh -i videos/nice/myVideo69.avi -fps 60
-	./asciimaker.sh -i myVideo.mp4 -fps 29.97 -w 256
-	./asciimaker.sh -i myVideo.mp4 -b light -c ".,-'01abc"
-	./asciimaker.sh -y https://www.youtube.com/watch?v=dQw4w9WgXcQ -s 00:03 -e 00:07
-	./asciimaker.sh -y https://www.youtube.com/watch?v=sjbLokqe0rA -w 140 -e 00:05
-	./asciimaker.sh -C
-	./asciimaker.sh -h
+Usage examples:
+	bash asciimaker.sh -i myVideo.mp4
+	bash asciimaker.sh -i videos/nice/myVideo69.avi -fps 60
+	bash asciimaker.sh -i myVideo.mp4 -fps 29.97 -w 256
+	bash asciimaker.sh -i myVideo.mp4 -b light -c ".,-'01abc"
+	bash asciimaker.sh -y "https://www.youtube.com/watch?v=dQw4w9WgXcQ" -w 170 -s 00:03 -e 00:07
+	bash asciimaker.sh -y "https://www.youtube.com/watch?v=sjbLokqe0rA" -w 140 -e 00:05
+	bash asciimaker.sh -C
+	bash asciimaker.sh -h
 
 
-Currently only working on Linux.
+Compatible with Linux and Mac.
 
 
 Links:

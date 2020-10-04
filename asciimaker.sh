@@ -508,7 +508,7 @@ fi
   `rm -f $resources_folder/*.mp4`
   `rm -f $sequence_folder/*.jpg`
   `rm -f $sequence_folder/*.txt`
-  tail -n +2 $resources_folder/outputascii.html > "$FILE.tmp" && mv "$FILE.tmp" $resources_folder/outputascii.html
+  tail -n +2 $resources_folder/outputascii.html > "FILE.tmp" && mv "FILE.tmp" $resources_folder/outputascii.html
   `head --lines=-1 $resources_folder/outputascii.html > output.html`
   `rm -f $resources_folder/outputascii.html`
   `rm -f $resources_folder/*.part`
